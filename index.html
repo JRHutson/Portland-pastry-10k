@@ -13,14 +13,23 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
+    <!-- Leaflet Locate Control-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
     
     <!-- Mapbox GL -->
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css" rel='stylesheet' />
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js"></script>
 
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
     <script src="leaflet-mapbox-gl.js"></script>
 
     <script type="text/javascript" src="token.js"></script> 
+
+    <script type="text/javascript" src="./data/vendors.js"></script> 
 
 
     <style  >
@@ -57,34 +66,27 @@
 
     const map = L.map('map').fitWorld();
 
-    L.marker([38.912753, -77.032194])
-        .bindPopup("Hello <b>Leaflet GL</b>!<br>Whoa, it works!")
-        .addTo(map)
-        .openPopup();
-
     L.tileLayer(baseMapURL, {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+	}).addTo(map);
+	
+    var vendorsLayer = L.geoJson(vendors, {
+        style:{
+            fillColor:"#A61C3C",
+            color: "#D3F6DB",
+            weight: 3,
+            opacity: .5,
+            fillOpacity: 1
+            },
+        pointToLayer: function(feature, latlon) {
+        return L.circleMarker(latlon, 3).bindPopup("<h2>"+feature.properties.Name+"</h2>"+"<a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+feature.properties.Info);
+        }
+    }).addTo(map);
     
+    map.fitBounds(vendorsLayer.getBounds().pad(0.5));
 
-    function onLocationFound(e) {
-        const radius = e.accuracy / 2;
-
-        const locationMarker = L.marker(e.latlng).addTo(map)
-            .bindPopup(`You are within ${radius} meters from this point`).openPopup();
-
-        const locationCircle = L.circle(e.latlng, radius).addTo(map);
-    }
-
-    function onLocationError(e) {
-        alert(e.message);
-    }
-
-    map.on('locationfound', onLocationFound);
-    map.on('locationerror', onLocationError);
-
-    map.locate({setView: true, maxZoom: 16});
+    
 </script>
 
 
