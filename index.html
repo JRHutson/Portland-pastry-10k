@@ -8,7 +8,7 @@
     <title>Portland Pastry 10K</title>
     
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
+   
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
     
+    <link rel="stylesheet" href="customtooltip.css">
+    <link rel="stylesheet" href="custompopup.css"
+
     <!-- Mapbox GL -->
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css" rel='stylesheet' />
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js"></script>
@@ -90,7 +93,9 @@
             fillOpacity: 1
             },
         pointToLayer: function(feature, latlon) {
-        return L.circleMarker(latlon, 3).bindPopup("<h2>"+feature.properties.Name+"</h2>"+"<a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+feature.properties.Info);
+            label = String(feature.properties.Name)
+        return L.circleMarker(latlon, 3).bindPopup("<h2>"+feature.properties.Name+"</h2>"+"<a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+feature.properties.Info)
+        .bindTooltip(label, {className: 'PastryToolTip', permanent: true, opacity: 0.8, offset: [0,30], direction: 'center'});
         }
     }).addTo(map);
 
