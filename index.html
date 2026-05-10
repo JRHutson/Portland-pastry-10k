@@ -8,7 +8,7 @@
     <title>Portland Pastry 10K</title>
     
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
+   
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
     
+    <link rel="stylesheet" href="customtooltip.css">
+    <link rel="stylesheet" href="custompopup.css"
+
     <!-- Mapbox GL -->
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css" rel='stylesheet' />
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js"></script>
@@ -81,6 +84,22 @@
 
     L.geoJson(route, {style: routeStyle}).addTo(map);
     
+    function getinfo(input) {
+        if (input.properties.Info == 'null'){
+            return ''
+        } else {
+            return input.properties.Info
+        }
+    }
+
+    function getaddress(input){
+        if (input.properties.Address == 'null'){
+            return ''
+        } else {
+            return input.properties.Address
+        }
+    }
+
     var vendorsLayer = L.geoJson(vendors, {
         style:{
             fillColor:"#A61C3C",
@@ -90,7 +109,10 @@
             fillOpacity: 1
             },
         pointToLayer: function(feature, latlon) {
-        return L.circleMarker(latlon, 3).bindPopup("<h2>"+feature.properties.Name+"</h2>"+"<a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+feature.properties.Info);
+            label = String(feature.properties.Name)
+            content = String("<h2>"+feature.properties.Name+"</h2>"+getaddress(feature)+"<br><a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+getinfo(feature))
+        return L.circleMarker(latlon, 3).bindPopup(content, {'className' : 'PastryPopUp'})
+        .bindTooltip(label, {className: 'PastryToolTip', permanent: true, opacity: 0.8, offset: [0,30], direction: 'center'});
         }
     }).addTo(map);
 
