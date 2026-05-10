@@ -111,7 +111,7 @@
         pointToLayer: function(feature, latlon) {
             label = String(feature.properties.Name)
             content = String("<h2>"+feature.properties.Name+"</h2>"+getaddress(feature)+"<br><a href=" +feature.properties.Website+">Website</a>"+"<br><a href="+feature.properties.Instagram+">Instagram</a><br>"+getinfo(feature))
-        return L.circleMarker(latlon, 3).bindPopup(content)
+        return L.circleMarker(latlon, 3).bindPopup(content, {'className' : 'PastryPopUp'})
         .bindTooltip(label, {className: 'PastryToolTip', permanent: true, opacity: 0.8, offset: [0,30], direction: 'center'});
         }
     }).addTo(map);
