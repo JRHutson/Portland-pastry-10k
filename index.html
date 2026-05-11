@@ -14,8 +14,8 @@
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
     <!-- Leaflet Locate Control-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@[VERSION]/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
     
     <link rel="stylesheet" href="customtooltip.css">
     <link rel="stylesheet" href="custompopup.css"
@@ -82,6 +82,15 @@
     "opacity": 0.65
     };
 
+    var OptionsLocation = {
+        "flyTo" : "True",
+        "showCompass" : "True",
+        "strings": {
+            "title": ""
+        }
+    };
+
+
     L.geoJson(route, {style: routeStyle}).addTo(map);
     
     function getinfo(input) {
@@ -116,6 +125,7 @@
         }
     }).addTo(map);
 
+    L.control.locate(OptionsLocation).addTo(map);
     
     map.fitBounds(vendorsLayer.getBounds().pad(0.5));
 
